@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: mutual-ledger
+    runtime: python
+    plan: starter
+    region: ohio
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /healthz
+    envVars:
+      - key: LEDGER_DB
+        value: /var/data/ledger.db
+      - key: PYTHON_VERSION
+        value: 3.12.8
+    disk:
+      name: mutual-ledger-data
+      mountPath: /var/data
+      sizeGB: 1
